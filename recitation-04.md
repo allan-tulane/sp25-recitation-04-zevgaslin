@@ -1,7 +1,7 @@
 # CMPS 2200  Recitation 04
 
-**Name (Team Member 1):**_________________________  
-**Name (Team Member 2):**_________________________
+**Name (Team Member 1):**Zev Gaslin  
+**Name (Team Member 2):**Josh Haddad
 
 
 In this lab you will practice using the `map` and `reduce` functions. These functions are commonly used together in a `map-reduce` framework, used by Google and others to parallelize and scale common computations.
@@ -37,7 +37,14 @@ To use this function to count words, you'll need to implement your own `map_f` a
 4. Assume that a word `w` appears `n` times. What is the **work** and **span** of `word_count_reduce` for this word, assuming a parallel implementation of the `reduce` function?
 
 **Enter answer here**
+Work:
+W(N)=N
+The work of this function is based on the number of operations preformed. Because the first step of this function splits each word into its own touple which are then grouped independently and combined in the last step. Because of this an operation is preformed at each of the 3 steps for each word giving a total work of 3N or N
 
+
+Span:
+S(N)=log(N)
+The span of this function is based of the critical path length. In this intsance the function is parralized because the first step splits each word into its own touple which is then recombined in the final steps of the problem. This first step has a span of 1. The next step combines all the same words into one touple and has a span of log the number of words because the words are still parralized. The final step has to condense each touple which occurs n times for a given word given a runtime of log(n). Because the number of words is larger then the amount of repeated words the total span of this function is just log(the number of words) or log(N).
 
 5. Why are we going through all this trouble? Couldn't I just use this function to count words?
 
@@ -53,7 +60,7 @@ for doc in docs:
 What is the problem that prevents us from easily parallelizing this solution?
 
 **Enter answer here**
-
+Counts is updated after each word and therefore if the whole list were to be checked in parrallel multiple entries could be created for the same word which would could cause errors correctly counting the words. Additionally, unforseen issues could occur if two identical words are trying to be added to the dictionary at the exact same time.
 
 ## Part 2: Sentiment analysis
 

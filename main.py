@@ -2,14 +2,14 @@
 
 from collections import defaultdict
 
-
 #### PART ONE ###
+
 
 def run_map_reduce(map_f, reduce_f, docs):
     # done. do not change me.
     """    
     The main map reduce logic.
-    
+
     Params:
       map_f......the mapping function
       reduce_f...the reduce function
@@ -25,20 +25,24 @@ def run_map_reduce(map_f, reduce_f, docs):
     # e.g., [('am', 2), ('ham', 1), ('i', 2), ('is', 1), ('sam', 2)]
     return [reduce_f(g) for g in groups]
 
+
 def word_count_map(doc):
     """
     Params:
       doc....a string to be split into tokens. split on whitespace.
     Returns:
       a list of tuples of form (token, 1), where token is a whitespace delimited element of this string.
-      
+
     E.g.
     >>> word_count_map('i am sam i am')
     [('i', 1), ('am', 1), ('sam', 1), ('i', 1), ('am', 1)]
     """
     ###TODO
-    
-    
+    words = doc.split()
+    array = []
+    for word in words:
+        array.append((word, 1))
+    return array
 
 
 def word_count_reduce(group):
@@ -50,12 +54,11 @@ def word_count_reduce(group):
     E.g.
     >>> word_count_reduce(['i', [1,1]])
     ('i', 2)
-    
+
     NOTE: you should use call the `reduce` function here.
     """
     ###TODO
-    
-    
+    return (group[0], reduce(plus, 0, group[1]))
 
 
 def iterate(f, x, a):
@@ -70,10 +73,12 @@ def iterate(f, x, a):
         return x
     else:
         return iterate(f, f(x, a[0]), a[1:])
-    
+
+
 def flatten(sequences):
     # done. do not change me.
     return iterate(plus, [], sequences)
+
 
 def collect(pairs):
     """
@@ -93,6 +98,7 @@ def plus(x, y):
     # done. do not change me.
     return x + y
 
+
 def reduce(f, id_, a):
     # done. do not change me.
     if len(a) == 0:
@@ -100,17 +106,17 @@ def reduce(f, id_, a):
     elif len(a) == 1:
         return a[0]
     else:
-        return f(reduce(f, id_, a[:len(a)//2]),
-                 reduce(f, id_, a[len(a)//2:]))
-    
-    
-    
-    
+        return f(reduce(f, id_, a[:len(a) // 2]),
+                 reduce(f, id_, a[len(a) // 2:]))
+
+
 ### PART TWO ###
+
 
 def sentiment_map(doc,
                   pos_terms=set(['good', 'great', 'awesome', 'sockdolager']),
-                  neg_terms=set(['bad', 'terrible', 'waste', 'carbuncle', 'corrupted'])):
+                  neg_terms=set(
+                      ['bad', 'terrible', 'waste', 'carbuncle', 'corrupted'])):
     """
     Params:
       doc.........a string to be split into tokens. split on whitespace.
@@ -123,4 +129,11 @@ def sentiment_map(doc,
     [('negative', 1), ('negative', 1)]
     """
     ###TODO
-
+    words = doc.split()
+    array = []
+    for word in words:
+        if word in pos_terms:
+            array.append(("positive", 1))
+        if word in neg_terms:
+            array.append(("negative", 1))
+    return array
